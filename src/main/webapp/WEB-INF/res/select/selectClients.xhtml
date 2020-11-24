@@ -12,7 +12,7 @@
 <composite:implementation>
     <h2>Клиенты</h2>
     <h:form>
-        <h:dataTable value="#{clientBean.selectAll}" var="client" border="2" >
+        <h:dataTable value="#{clientBean.allClients}" var="client" border="2" >
             <h:column>
                 <f:facet name="header">Id</f:facet>
                 #{client.id}
@@ -29,9 +29,12 @@
                 <f:facet name="header">Id соглашения</f:facet>
                 #{client.agreementId}
             </h:column>
-<!--            <h:column>-->
-<!--                <h:commandLink action="#{editionBean.deleteEdition(client.id)}" value="delete"/>-->
-<!--            </h:column>-->
+            <h:column>
+                <h:commandLink action="#{clientBean.updateClient(client.id)}" value="update"/>
+            </h:column>
+            <h:column>
+                <h:commandLink action="#{clientBean.deleteClient(client)}" value="delete"/>
+            </h:column>
         </h:dataTable>
     </h:form>
 </composite:implementation>

@@ -17,7 +17,7 @@ public class ClientBean {
         return client;
     }
 
-    public List<Client> selectAll(){
+    public List<Client> getAllClients(){
 //        try {
 //            return clientDAO.findClients();
 //        } catch (SQLException throwables) {
@@ -27,5 +27,12 @@ public class ClientBean {
         clients.add(new Client(1, "Nikolay", "Voronin", 1));
         clients.add(new Client(2, "Valeriy", "Pronin", 2));
         return clients;
+    }
+
+    public void deleteClient(int id){
+        System.out.println("Delete client");
+    }
+    public void updateClient(Client client){
+        System.out.println("Update client");
     }
 }
