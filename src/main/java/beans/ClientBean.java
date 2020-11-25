@@ -30,9 +30,19 @@ public class ClientBean {
     }
 
     public void deleteClient(int id){
+        try {
+            clientDAO.delete(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         System.out.println("Delete client");
     }
     public void updateClient(Client client){
+        try {
+            clientDAO.update(client);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         System.out.println("Update client");
     }
 }
