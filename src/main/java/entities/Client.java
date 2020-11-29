@@ -4,15 +4,13 @@ public class Client {
     private int id;
     private String name;
     private String lastName;
-    private int agreementId;
 
     public Client() {
     }
-    public Client(int id, String name, String lastName, int agreementId) {
+    public Client(int id, String name, String lastName) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
-        this.agreementId = agreementId;
     }
 
     public int getId() {
@@ -39,11 +37,4 @@ public class Client {
         this.lastName = lastName;
     }
 
-    public int getAgreementId() {
-        return agreementId;
-    }
-
-    public void setAgreementId(int agreementId) {
-        this.agreementId = agreementId;
-    }
 }
