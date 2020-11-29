@@ -1,16 +1,19 @@
-package entities;
+package model.entities;
 
-public class Client {
+public class InsuranceAgent {
     private int id;
     private String name;
     private String lastName;
+    private String agencyName;
 
-    public Client() {
+    public InsuranceAgent() {
     }
-    public Client(int id, String name, String lastName) {
+
+    public InsuranceAgent(int id, String name, String lastName, String agencyName) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
+        this.agencyName = agencyName;
     }
 
     public int getId() {
@@ -35,6 +38,14 @@ public class Client {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getAgencyName() {
+        return agencyName;
+    }
+
+    public void setAgencyName(String agencyName) {
+        this.agencyName = agencyName;
     }
 
 }

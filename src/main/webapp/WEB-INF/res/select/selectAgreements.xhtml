@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:composite = "http://java.sun.com/jsf/composite">
+<composite:interface>
+</composite:interface>
+
+<composite:implementation>
+    <h2>Соглашения</h2>
+    <h:form>
+        <h:dataTable value="#{agreementBean.allAgreements}" var="agreement" border="2">
+            <h:column>
+                <f:facet name="header">Id</f:facet>
+                #{agreement.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Номер соглашения</f:facet>
+                #{agreement.agreementNumber}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Id клиента</f:facet>
+                #{agreement.clientId}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Id агента</f:facet>
+                #{agreement.agentId}
+            </h:column>
+            <h:column>
+                <h:commandLink action="#{agreementBean.toUpdateAgreementPage(agreement.id)}" value="update"/>
+            </h:column>
+            <h:column>
+                <h:commandLink action="#{agreementBean.deleteAgreement(agreement.id)}" value="delete"/>
+            </h:column>
+        </h:dataTable>
+    </h:form>
+    <h:form>
+        <h:panelGrid columns = "3">
+            <h:outputLabel value="Номер соглашения" />
+            <h:outputLabel value="Id клиента" />
+            <h:outputLabel value="Id агента" />
+            <h:inputText value="#{agreementBean.agreement.agreementNumber}"/>
+            <h:inputText value="#{agreementBean.agreement.clientId}"/>
+            <h:inputText value="#{agreementBean.agreement.agentId}"/>
+            <h:commandButton action="#{agreementBean.addAgreement(agreementBean.agreement)}" value="add"/>
+        </h:panelGrid>
+    </h:form>
+</composite:implementation>
+</html>

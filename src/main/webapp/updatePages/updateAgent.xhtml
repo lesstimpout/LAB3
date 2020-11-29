@@ -9,11 +9,13 @@
     <h:form>
         <h:panelGrid columns = "2">
             <h:outputLabel>Имя: </h:outputLabel>
-            <h:inputText value="#{clientBean.client.name}"/>
+            <h:inputText value="#{agentBean.insuranceAgent.name}"/>
             <h:outputLabel>Фамилия: </h:outputLabel>
-            <h:inputText value="#{clientBean.client.lastName}"/>
+            <h:inputText value="#{agentBean.insuranceAgent.lastName}"/>
+            <h:outputLabel>Название агентства: </h:outputLabel>
+            <h:inputText value="#{agentBean.insuranceAgent.agencyName}" />
         </h:panelGrid><br/>
-        <h:commandButton action = "#{clientBean.updateClient}"
+        <h:commandButton action = "#{agentBean.updateAgent}"
                          value = "UPDATE"/>
     </h:form>
 </f:view>

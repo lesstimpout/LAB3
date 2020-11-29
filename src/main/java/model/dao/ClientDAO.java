@@ -1,6 +1,6 @@
-package dao;
+package model.dao;
 
-import entities.Client;
+import model.entities.Client;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ public class ClientDAO {
         while (rs.next()){
             clientList.add(new Client(rs.getInt("id"), rs.getString("name"), rs.getString("last_name")));
         }
+        ps.close();
+        rs.close();
         return clientList;
     }
 
@@ -38,6 +40,7 @@ public class ClientDAO {
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setInt(1, id);
         ps.executeUpdate();
+        ps.close();
     }
 
     public synchronized void update(Client client) throws SQLException{
@@ -47,6 +50,7 @@ public class ClientDAO {
         ps.setString(2, client.getLastName());
         ps.setInt(3, updateClientId);
         ps.executeUpdate();
+        ps.close();
     }
 
     public synchronized void add(Client client) throws SQLException {
@@ -55,5 +59,6 @@ public class ClientDAO {
         ps.setString(1, client.getName());
         ps.setString(2, client.getLastName());
         ps.executeUpdate();
+        ps.close();
     }
 }

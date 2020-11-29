@@ -8,12 +8,14 @@
 <f:view>
     <h:form>
         <h:panelGrid columns = "2">
-            <h:outputLabel>Имя: </h:outputLabel>
-            <h:inputText value="#{clientBean.client.name}"/>
-            <h:outputLabel>Фамилия: </h:outputLabel>
-            <h:inputText value="#{clientBean.client.lastName}"/>
+            <h:outputLabel>Номер соглашения: </h:outputLabel>
+            <h:inputText value="#{agreementBean.agreement.agreementNumber}"/>
+            <h:outputLabel>Id клиента: </h:outputLabel>
+            <h:inputText value="#{agreementBean.agreement.clientId}"/>
+            <h:outputLabel>Id агента: </h:outputLabel>
+            <h:inputText value="#{agreementBean.agreement.agentId}" />
         </h:panelGrid><br/>
-        <h:commandButton action = "#{clientBean.updateClient}"
+        <h:commandButton action = "#{agreementBean.updateAgreement}"
                          value = "UPDATE"/>
     </h:form>
 </f:view>

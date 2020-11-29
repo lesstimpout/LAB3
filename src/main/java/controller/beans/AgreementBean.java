@@ -1,71 +1,67 @@
-package beans;
+package controller.beans;
 
-import dao.ClientDAO;
-import entities.Client;
+import model.dao.AgreementDAO;
+import model.entities.Agreement;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-@Named(value = "clientBean")
-public class ClientBean {
-    private Client client;
-    private ClientDAO clientDAO = new ClientDAO();
+@Named(value = "agreementBean")
+public class AgreementBean {
+    private Agreement agreement;
+    private AgreementDAO agreementDAO = new AgreementDAO();
 
-    public ClientBean() {
-        client = new Client();
+    public AgreementBean() {
+        agreement = new Agreement();
     }
 
-    public Client getClient() {
-        return client;
+    public Agreement getAgreement() {
+        return agreement;
     }
 
-    public List<Client> getAllClients(){
+    public List<Agreement> getAllAgreements(){
         try {
-            return clientDAO.selectAll();
+            return agreementDAO.selectAll();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return null;
     }
 
-    public void deleteClient(int id){
+    public void deleteAgreement(int id){
         try {
-            clientDAO.delete(id);
+            agreementDAO.delete(id);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
         }
-        System.out.println("Delete client");
     }
 
-    public void addClient(Client client){
+    public void addAgreement(Agreement agreement){
         try {
-            clientDAO.add(client);
+            agreementDAO.add(agreement);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
         }
-        System.out.println("Update client");
     }
 
-    public void updateClient(){
+    public void updateAgreement(){
         try {
-            clientDAO.update(client);
+            agreementDAO.update(agreement);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
         } catch (SQLException | IOException throwables) {
             throwables.printStackTrace();
         }
-        System.out.println("Update client");
     }
 
-    public void toUpdateClientPage(int id){
-        ClientDAO.updateClientId = id;
+    public void toUpdateAgreementPage(int id){
+        AgreementDAO.updateAgreementId = id;
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/updatePages/updateClient.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/updatePages/updateAgent.xhtml");
         } catch (IOException e) {
             e.printStackTrace();
         }

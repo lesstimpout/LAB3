@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:composite = "http://java.sun.com/jsf/composite">
+<composite:interface>
+</composite:interface>
+
+<composite:implementation>
+    <h2>Страховые агенты</h2>
+    <h:form>
+        <h:dataTable value="#{agentBean.allAgents}" var="agent" border="2">
+            <h:column>
+                <f:facet name="header">Id</f:facet>
+                #{agent.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Имя</f:facet>
+                #{agent.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Фамилия</f:facet>
+                #{agent.lastName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Название агентства</f:facet>
+                #{agent.agencyName}
+            </h:column>
+            <h:column>
+                <h:commandLink action="#{agentBean.toUpdateAgentPage(agent.id)}" value="update"/>
+            </h:column>
+            <h:column>
+                <h:commandLink action="#{agentBean.deleteAgent(agent.id)}" value="delete"/>
+            </h:column>
+        </h:dataTable>
+    </h:form>
+    <h:form>
+        <h:panelGrid columns = "3">
+            <h:outputLabel value="Имя" />
+            <h:outputLabel value="Фамилия" />
+            <h:outputLabel value="Название агентства" />
+            <h:inputText value="#{agentBean.insuranceAgent.name}"/>
+            <h:inputText value="#{agentBean.insuranceAgent.lastName}"/>
+            <h:inputText value="#{agentBean.insuranceAgent.agencyName}"/>
+            <h:commandButton action="#{agentBean.addAgent(agentBean.insuranceAgent)}" value="add"/>
+        </h:panelGrid>
+    </h:form>
+</composite:implementation>
+</html>
