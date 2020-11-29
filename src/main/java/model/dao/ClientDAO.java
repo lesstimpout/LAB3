@@ -8,9 +8,9 @@ import java.util.List;
 
 public class ClientDAO {
     public static int updateClientId = 0;
-    private Connection connection;
+    private static Connection connection;
 
-    public ClientDAO() {
+    static{
         String username = "max";
         String password = "123";
         String URL = "jdbc:postgresql://localhost:5432/insurance";
@@ -20,6 +20,10 @@ public class ClientDAO {
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public ClientDAO() {
+
     }
 
     public synchronized List<Client> selectAll() throws SQLException {
