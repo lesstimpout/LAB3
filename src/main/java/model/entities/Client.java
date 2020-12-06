@@ -1,6 +1,9 @@
 package model.entities;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "client")
@@ -13,6 +16,8 @@ public class Client {
     @Column(name = "id")
     private int id;
     @Basic
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z \\u0400-\\u04FF]+")
     private String name;
     @Basic
     private String lastName;

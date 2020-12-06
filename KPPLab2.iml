@@ -55,6 +55,8 @@
     <orderEntry type="library" name="EJB-3.2.2" level="project" />
     <orderEntry type="library" name="postgresql-42.2.16" level="project" />
     <orderEntry type="library" name="postgresql-42.2.18" level="project" />
+    <orderEntry type="library" name="org.eclipse.persistence:eclipselink:2.7.6" level="project" />
+    <orderEntry type="library" name="org.eclipse.persistence:eclipselink:2.7.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.enterprise:cdi-api:2.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.el:javax.el-api:3.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
@@ -68,7 +70,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-engine:5.6.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: jstl:jstl:1.2" level="project" />
-    <orderEntry type="library" name="org.eclipse.persistence:eclipselink:2.7.6" level="project" />
-    <orderEntry type="library" name="org.eclipse.persistence:eclipselink:2.7.6" level="project" />
+    <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
   </component>
 </module>
