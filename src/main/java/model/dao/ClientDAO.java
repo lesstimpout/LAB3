@@ -2,67 +2,52 @@ package model.dao;
 
 import model.entities.Client;
 
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateless
 public class ClientDAO {
     public static int updateClientId = 0;
-    private static Connection connection;
+    @PersistenceContext(name = "insuranceUnit")
+    private EntityManager em;
 
-    static{
-        String username = "max";
-        String password = "123";
-        String URL = "jdbc:postgresql://localhost:5432/insurance";
-        try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(URL, username, password);
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+    public List<Client> selectAll(){
+        return em.createNamedQuery("Client.findAll", Client.class).getResultList();
+    }
+
+    public void update(Client client){
+        if (client.getName()!=null | !client.getName().equals("")){
+            Query query = em.createQuery("update Client c SET c.name = :name WHERE c.id = :id");
+            query.setParameter("name", client.getName());
+            query.setParameter("id", client.getId());
+            query.executeUpdate();
         }
-    }
-
-    public ClientDAO() {
-
-    }
-
-    public synchronized List<Client> selectAll() throws SQLException {
-        String sql = "SELECT * FROM client ORDER BY id";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        List<Client> clientList = new ArrayList<>();
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()){
-            clientList.add(new Client(rs.getInt("id"), rs.getString("name"), rs.getString("last_name")));
+        if (client.getLastName()!=null | !client.getLastName().equals("")){
+            Query query = em.createQuery("update Client c SET c.lastName = :lastName WHERE c.id = :id");
+            query.setParameter("lastName", client.getLastName());
+            query.setParameter("id", client.getId());
+            query.executeUpdate();
         }
-        ps.close();
-        rs.close();
-        return clientList;
+        //em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
-    public synchronized void delete(int id) throws SQLException{
-        String sql = "DELETE FROM client WHERE id = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-        ps.close();
+    public void delete(int id){
+        Query query = em.createQuery("DELETE FROM Client c WHERE c.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+        //em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
-    public synchronized void update(Client client) throws SQLException{
-        String sql = "UPDATE client SET name = ?, last_name = ? WHERE id = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, client.getName());
-        ps.setString(2, client.getLastName());
-        ps.setInt(3, updateClientId);
-        ps.executeUpdate();
-        ps.close();
+    public List<Integer> selectClientId() {
+        return em.createQuery("SELECT c.id FROM Client c").getResultList();
     }
 
-    public synchronized void add(Client client) throws SQLException {
-        String sql = "INSERT INTO client (id, name, last_name) VALUES ((SELECT max(id)+1 FROM client), ?, ?)";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, client.getName());
-        ps.setString(2, client.getLastName());
-        ps.executeUpdate();
-        ps.close();
+    public void add(Client client) {
+        em.persist(client);
     }
 }

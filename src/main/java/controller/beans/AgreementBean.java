@@ -3,16 +3,21 @@ package controller.beans;
 import model.dao.AgreementDAO;
 import model.entities.Agreement;
 
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
+@SessionScoped
 @Named(value = "agreementBean")
-public class AgreementBean {
+public class AgreementBean implements Serializable {
     private Agreement agreement;
-    private AgreementDAO agreementDAO = new AgreementDAO();
+    @EJB
+    private AgreementDAO agreementDAO;
 
     public AgreementBean() {
         agreement = new Agreement();
@@ -23,19 +28,14 @@ public class AgreementBean {
     }
 
     public List<Agreement> getAllAgreements(){
-        try {
             return agreementDAO.selectAll();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
     }
 
     public void deleteAgreement(int id){
         try {
             agreementDAO.delete(id);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
+        } catch (IOException throwables) {
             throwables.printStackTrace();
         }
     }
@@ -44,7 +44,7 @@ public class AgreementBean {
         try {
             agreementDAO.add(agreement);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
+        } catch (IOException throwables) {
             throwables.printStackTrace();
         }
     }
@@ -53,7 +53,7 @@ public class AgreementBean {
         try {
             agreementDAO.update(agreement);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
+        } catch (IOException throwables) {
             throwables.printStackTrace();
         }
     }

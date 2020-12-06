@@ -1,66 +1,60 @@
 package model.dao;
 
+import model.entities.Client;
 import model.entities.InsuranceAgent;
 
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateless
 public class InsuranceAgentDAO {
     public static int updateAgentId = 0;
-    private Connection connection;
+    @PersistenceContext(name = "insuranceUnit")
+    private EntityManager em;
 
-    public InsuranceAgentDAO() {
-        String username = "max";
-        String password = "123";
-        String URL = "jdbc:postgresql://localhost:5432/insurance";
-        try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(URL, username, password);
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+    public List<InsuranceAgent> selectAll(){
+        return em.createNamedQuery("InsuranceAgent.findAll", InsuranceAgent.class).getResultList();
+    }
+
+    public void update(InsuranceAgent agent){
+        if (agent.getName()!=null | !agent.getName().equals("")){
+            Query query = em.createQuery("update InsuranceAgent ia SET ia.name = :name WHERE ia.id = :id");
+            query.setParameter("name", agent.getName());
+            query.setParameter("id", agent.getId());
+            query.executeUpdate();
         }
-    }
-
-    public synchronized List<InsuranceAgent> selectAll() throws SQLException {
-        String sql = "SELECT * FROM insurance_agent ORDER BY id";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        List<InsuranceAgent> agentList = new ArrayList<>();
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()){
-            agentList.add(new InsuranceAgent(rs.getInt("id"), rs.getString("name"), rs.getString("last_name"), rs.getString("agency_name")));
+        if (agent.getLastName()!=null | !agent.getLastName().equals("")){
+            Query query = em.createQuery("update InsuranceAgent ia SET ia.lastName = :lastName WHERE ia.id = :id");
+            query.setParameter("lastName", agent.getLastName());
+            query.setParameter("id", agent.getId());
+            query.executeUpdate();
         }
-        ps.close();
-        rs.close();
-        return agentList;
+        if (agent.getAgencyName()!=null | !agent.getAgencyName().equals("")){
+            Query query = em.createQuery("update InsuranceAgent ia SET ia.agencyName = :agencyName WHERE ia.id = :id");
+            query.setParameter("agencyName", agent.getAgencyName());
+            query.setParameter("id", agent.getId());
+            query.executeUpdate();
+        }
+        //em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
-    public synchronized void delete(int id) throws SQLException{
-        String sql = "DELETE FROM insurance_agent WHERE id = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-        ps.close();
+    public void delete(int id){
+        Query query = em.createQuery("DELETE FROM InsuranceAgent ia WHERE ia.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+        //em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
-    public synchronized void update(InsuranceAgent agent) throws SQLException{
-        String sql = "UPDATE insurance_agent SET name = ?, last_name = ?, agency_name= ?  WHERE id = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, agent.getName());
-        ps.setString(2, agent.getLastName());
-        ps.setString(3, agent.getAgencyName());
-        ps.setInt(4, updateAgentId);
-        ps.executeUpdate();
-        ps.close();
+    public List<Integer> selectClientId() {
+        return em.createQuery("SELECT ia.id FROM InsuranceAgent ia").getResultList();
     }
 
-    public synchronized void add(InsuranceAgent agent) throws SQLException {
-        String sql = "INSERT INTO insurance_agent (id, name, last_name, agency_name) VALUES ((SELECT max(id)+1 FROM insurance_agent), ?, ?, ?)";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, agent.getName());
-        ps.setString(2, agent.getLastName());
-        ps.setString(3, agent.getAgencyName());
-        ps.executeUpdate();
-        ps.close();
+    public void add(InsuranceAgent agent) {
+        em.persist(agent);
     }
 }

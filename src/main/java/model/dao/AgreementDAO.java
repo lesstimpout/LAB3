@@ -1,66 +1,60 @@
 package model.dao;
 
 import model.entities.Agreement;
+import model.entities.Client;
 
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateless
 public class AgreementDAO {
     public static int updateAgreementId = 0;
-    private Connection connection;
+    @PersistenceContext(name = "insuranceUnit")
+    private EntityManager em;
 
-    public AgreementDAO() {
-        String username = "max";
-        String password = "123";
-        String URL = "jdbc:postgresql://localhost:5432/insurance";
-        try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(URL, username, password);
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+    public List<Agreement> selectAll(){
+        return em.createNamedQuery("Agreement.findAll", Agreement.class).getResultList();
+    }
+
+    public void update(Agreement agreement){
+        if (agreement.getAgreementNumber()!=null | !agreement.getAgreementNumber().equals("")){
+            Query query = em.createQuery("update Agreement a SET a.agreementNumber = :agreementNumber WHERE a.id = :id");
+            query.setParameter("agreementNumber", agreement.getAgreementNumber());
+            query.setParameter("id", agreement.getId());
+            query.executeUpdate();
         }
-    }
-
-    public synchronized List<Agreement> selectAll() throws SQLException {
-        String sql = "SELECT * FROM agreement ORDER BY id";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        List<Agreement> agreementList = new ArrayList<>();
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()){
-            agreementList.add(new Agreement(rs.getInt("id"), rs.getString("agreement_number"), rs.getInt("client_id"), rs.getInt("agent_id")));
+        if (agreement.getAgentId() != 0){
+            Query query = em.createQuery("update Agreement a SET a.agentId = :agentId WHERE a.id = :id");
+            query.setParameter("agentId", agreement.getAgentId());
+            query.setParameter("id", agreement.getId());
+            query.executeUpdate();
         }
-        ps.close();
-        rs.close();
-        return agreementList;
+        if (agreement.getClientId() != 0){
+            Query query = em.createQuery("update Agreement a SET a.clientId = :clientId WHERE a.id = :id");
+            query.setParameter("clientId", agreement.getClientId());
+            query.setParameter("id", agreement.getId());
+            query.executeUpdate();
+        }
+        //em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
-    public synchronized void delete(int id) throws SQLException{
-        String sql = "DELETE FROM agreement WHERE id = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-        ps.close();
+    public void delete(int id){
+        Query query = em.createQuery("DELETE FROM Agreement a WHERE a.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+        //em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
-    public synchronized void update(Agreement agreement) throws SQLException{
-        String sql = "UPDATE agreement SET agreement_number = ?, client_id = ?, agent_id = ?  WHERE id = ?";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, agreement.getAgreementNumber());
-        ps.setInt(2, agreement.getClientId());
-        ps.setInt(3, agreement.getAgentId());
-        ps.setInt(4, updateAgreementId);
-        ps.executeUpdate();
-        ps.close();
+    public List<Integer> selectClientId() {
+        return em.createQuery("SELECT a.id FROM Agreement a").getResultList();
     }
 
-    public synchronized void add(Agreement agreement) throws SQLException {
-        String sql = "INSERT INTO agreement (id, agreement_number, client_id, agent_id) VALUES ((SELECT max(id)+1 FROM agreement), ?, ?, ?)";
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setString(1, agreement.getAgreementNumber());
-        ps.setInt(2, agreement.getClientId());
-        ps.setInt(3, agreement.getAgentId());
-        ps.executeUpdate();
-        ps.close();
+    public void add(Agreement agreement) {
+        em.persist(agreement);
     }
 }

@@ -3,16 +3,21 @@ package controller.beans;
 import model.dao.ClientDAO;
 import model.entities.Client;
 
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
+@SessionScoped
 @Named(value = "clientBean")
-public class ClientBean {
+public class ClientBean implements Serializable {
     private Client client;
-    private ClientDAO clientDAO = new ClientDAO();
+    @EJB
+    private ClientDAO clientDAO;
 
     public ClientBean() {
         client = new Client();
@@ -23,42 +28,34 @@ public class ClientBean {
     }
 
     public List<Client> getAllClients(){
-        try {
             return clientDAO.selectAll();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
     }
 
     public void deleteClient(int id){
-        try {
             clientDAO.delete(id);
+        try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println("Delete client");
     }
 
     public void addClient(Client client){
-        try {
             clientDAO.add(client);
+        try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println("Update client");
     }
 
     public void updateClient(){
-        try {
             clientDAO.update(client);
+        try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println("Update client");
     }
 
     public void toUpdateClientPage(int id){

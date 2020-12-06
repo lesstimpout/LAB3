@@ -3,39 +3,41 @@ package controller.beans;
 import model.dao.InsuranceAgentDAO;
 import model.entities.InsuranceAgent;
 
+import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
+@SessionScoped
 @Named(value = "agentBean")
-public class InsuranceAgentBean {
+public class InsuranceAgentBean implements Serializable {
     private InsuranceAgent agent;
-    private InsuranceAgentDAO agentDAO = new InsuranceAgentDAO();
+    @EJB
+    private InsuranceAgentDAO agentDAO;
 
     public InsuranceAgentBean() {
         agent = new InsuranceAgent();
+    }
+    
+    public List<InsuranceAgent> getAllAgents(){
+        return agentDAO.selectAll();
     }
 
     public InsuranceAgent getInsuranceAgent() {
         return agent;
     }
 
-    public List<InsuranceAgent> getAllAgents(){
-        try {
-            return agentDAO.selectAll();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
+
 
     public void deleteAgent(int id){
         try {
             agentDAO.delete(id);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
+        } catch (IOException throwables) {
             throwables.printStackTrace();
         }
     }
@@ -44,7 +46,7 @@ public class InsuranceAgentBean {
         try {
             agentDAO.add(agent);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
+        } catch (IOException throwables) {
             throwables.printStackTrace();
         }
     }
@@ -53,7 +55,7 @@ public class InsuranceAgentBean {
         try {
             agentDAO.update(agent);
             FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
-        } catch (SQLException | IOException throwables) {
+        } catch (IOException throwables) {
             throwables.printStackTrace();
         }
     }

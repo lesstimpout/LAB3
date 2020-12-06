@@ -1,9 +1,22 @@
 package model.entities;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "insurance_agent")
+@NamedQueries({
+        @NamedQuery(name = "InsuranceAgent.findAll", query = "SELECT ia FROM InsuranceAgent ia")
+})
 public class InsuranceAgent {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id")
     private int id;
+    @Basic
     private String name;
+    @Basic
     private String lastName;
+    @Basic
     private String agencyName;
 
     public InsuranceAgent() {

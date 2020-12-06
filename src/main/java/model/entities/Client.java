@@ -1,8 +1,20 @@
 package model.entities;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "client")
+@NamedQueries({
+        @NamedQuery(name = "Client.findAll", query = "SELECT c from Client c")
+})
 public class Client {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id")
     private int id;
+    @Basic
     private String name;
+    @Basic
     private String lastName;
 
     public Client() {
