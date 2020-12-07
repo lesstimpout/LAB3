@@ -22,25 +22,23 @@ public class ClientDAO {
 
     public void update(Client client){
         if (client.getName()!=null | !client.getName().equals("")){
-            Query query = em.createQuery("update Client c SET c.name = :name WHERE c.id = :id");
+            Query query = em.createQuery("UPDATE Client c SET c.name = :name WHERE c.id = :id");
             query.setParameter("name", client.getName());
             query.setParameter("id", client.getId());
             query.executeUpdate();
         }
         if (client.getLastName()!=null | !client.getLastName().equals("")){
-            Query query = em.createQuery("update Client c SET c.lastName = :lastName WHERE c.id = :id");
+            Query query = em.createQuery("UPDATE Client c SET c.lastName = :lastName WHERE c.id = :id");
             query.setParameter("lastName", client.getLastName());
             query.setParameter("id", client.getId());
             query.executeUpdate();
         }
-        //em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
     public void delete(int id){
         Query query = em.createQuery("DELETE FROM Client c WHERE c.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
-        //em.createNamedQuery("Order.findAll", Order.class).getResultList();
     }
 
     public List<Integer> selectClientId() {

@@ -22,8 +22,7 @@ public class Client {
     @Basic
     private String lastName;
 
-    public Client() {
-    }
+    public Client() {}
     public Client(int id, String name, String lastName) {
         this.id = id;
         this.name = name;
@@ -53,5 +52,4 @@ public class Client {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
 }
